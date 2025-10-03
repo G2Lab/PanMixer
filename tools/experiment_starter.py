@@ -18,6 +18,10 @@ def find_next_experiment_number():
             experiment_number += 1
 
 def experiment_starter(capacities_file, subjects_file, baseline_unedited, baseline_empty):
+
+    #check if EXPERIMENT_PATH exists
+    os.makedirs(EXPERIMENT_PATH, exist_ok=True)
+
     capacities = np.loadtxt(capacities_file)
     subjects = np.loadtxt(subjects_file, dtype=str)
 
