@@ -93,7 +93,7 @@ ROW_ID=$((SLURM_ARRAY_TASK_ID))
 """
 
 def launch_job(tool_name, args, memory = "64g", cpus = "1", num_tasks = "1"):
-    os.mkdir(f"{BASE_PATH}/slurm", exist_ok=True)
+    os.makedirs(f"{BASE_PATH}/slurm", exist_ok=True)
     path = f"{BASE_PATH}/slurm/{get_nyc_time_in_month_day_time()}_{tool_name}"
     os.mkdir(path)
     header = create_slurm_header(tool_name, path, memory, cpus, num_tasks)
@@ -115,7 +115,7 @@ def launch_job(tool_name, args, memory = "64g", cpus = "1", num_tasks = "1"):
     return path
 
 def launch_job_multichromosome(tool_name, args, memory = "64g", cpus = "1", num_tasks = "1"):
-    os.mkdir(f"{BASE_PATH}/slurm", exist_ok=True)
+    os.makedirs(f"{BASE_PATH}/slurm", exist_ok=True)
     path = f"{BASE_PATH}/slurm/{get_nyc_time_in_month_day_time()}_{tool_name}"
     os.mkdir(path)
     header = create_slurm_header_multichromosome(tool_name, path, memory, cpus, num_tasks)
@@ -137,7 +137,7 @@ def launch_job_multichromosome(tool_name, args, memory = "64g", cpus = "1", num_
     return path
 
 def launch_job_with_custom_command_multichromosome(tool_name, id_counter, command, memory = "64g", cpus = "1", num_tasks = "1"):
-    os.mkdir(f"{BASE_PATH}/slurm", exist_ok=True)
+    os.makedirs(f"{BASE_PATH}/slurm", exist_ok=True)
     path = f"{BASE_PATH}/slurm/{get_nyc_time_in_month_day_time()}_{tool_name}"
     os.mkdir(path)
     header = create_slurm_header_multichromosome(tool_name, path, memory, cpus, num_tasks)
@@ -156,7 +156,7 @@ def launch_job_with_custom_command_multichromosome(tool_name, id_counter, comman
     os.system(f"sbatch {path}/slurm_{id_counter}.sh")
 
 def launch_job_with_custom_command_by_chromosome(tool_name, id_counter, command, memory = "64g", cpus = "1", num_tasks = "1"):
-    os.mkdir(f"{BASE_PATH}/slurm", exist_ok=True)
+    os.makedirs(f"{BASE_PATH}/slurm", exist_ok=True)
     path = f"{BASE_PATH}/slurm/{get_nyc_time_in_month_day_time()}_{tool_name}"
     os.mkdir(path)
     header = create_slurm_header_by_chromosome(tool_name, path, memory, cpus)
@@ -177,7 +177,7 @@ def launch_job_with_custom_command_by_chromosome(tool_name, id_counter, command,
     os.system(f"sbatch {path}/slurm_{id_counter}.sh")
 
 def launch_job_with_custom_command_by_rowid(tool_name, id_counter, command, memory = "64g", cpus = "1", num_tasks = "1"):
-    os.mkdir(f"{BASE_PATH}/slurm", exist_ok=True)
+    os.makedirs(f"{BASE_PATH}/slurm", exist_ok=True)
     path = f"{BASE_PATH}/slurm/{get_nyc_time_in_month_day_time()}_{tool_name}"
     os.mkdir(path)
     header = create_slurm_header_by_rowid(tool_name, path, memory, cpus, num_tasks)
