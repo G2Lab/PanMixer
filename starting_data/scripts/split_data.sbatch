@@ -17,7 +17,7 @@ CHR_DIR=chr${CHR}
 mkdir -p ${CHR_DIR}
 
 # Input files
-VCF1="pangenome_no_X.vcf.gz"
+VCF1="pangenome_no_X_no_chm13.vcf.gz"
 VCF2="PG.vcf.gz"
 
 # Output files
