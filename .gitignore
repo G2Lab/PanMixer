@@ -56,6 +56,9 @@ build/
 *.frq
 *.txt
 
+!starting_data/capacity_files/*.txt
+!starting_data/subjects_files/*.txt
+
 *pangenome_real_snp_thin
 *pangenome_real_snp_thin_filtered
 *.det

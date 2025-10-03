@@ -44,11 +44,14 @@ Defined in `config.yaml`, these constants need to be set before running any scri
 - `python_env` – path to python environment (ex: ./envs/panmixer-env)
 - `base_path` – base path to root of this directory (ex: ./PanMixer)
 
+We suggest upon cloning this repository to copy the config, `cp config.yaml config.local.yaml` and changing the configurations in `config.local.yaml`
+
 > Note: Large data assets (pangenomes, read fastqs, 1000 Genomes datasets) are **not bundled** in this repository. You must download them yourselves. We provide scripts to help you :)
 ---
 
 ## Dataset installation and preprocessing
 
+Run `./startings_data/
 
 
 ## Quick Start
