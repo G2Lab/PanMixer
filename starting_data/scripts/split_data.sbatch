@@ -18,11 +18,11 @@ mkdir -p ${CHR_DIR}
 
 # Input files
 VCF1="pangenome_no_X.vcf.gz"
-VCF2="1000g.vcf.gz"
+VCF2="PG.vcf.gz"
 
 # Output files
 OUT1="${CHR_DIR}/pangenome.vcf.gz"
-OUT2="${CHR_DIR}/1000g.vcf.gz"
+OUT2="${CHR_DIR}/PG.vcf.gz"
 
 # Split using bcftools
 bcftools view --regions grch38#chr${CHR} ${VCF1} -Oz -o ${OUT1}
