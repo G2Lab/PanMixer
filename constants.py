@@ -21,8 +21,8 @@ PYTHON_ENV = CONFIG["python_env"]
 STARTING_DATA_PATH = f"{BASE_PATH}/starting_data"
 DEMOGRAPHICS_CSV = f"{STARTING_DATA_PATH}/Pangenomes Populations - VCF.csv"
 
-DEFAULT_SUBJECTS_FILE = f"{STARTING_DATA_PATH}/subjects_files/subjects.txt"
-DEFAULT_CAPACITY_FILE = f"{STARTING_DATA_PATH}/capacity_files/capacities_log.txt"
+DEFAULT_SUBJECTS_FILE = f"{STARTING_DATA_PATH}/subjects_files/subjects_small.txt"
+DEFAULT_CAPACITY_FILE = f"{STARTING_DATA_PATH}/capacity_files/capacities_test.txt"
 
 DEAD_WEIGHT = 10000000000
 VERBOSE = True
