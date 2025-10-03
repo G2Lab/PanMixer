@@ -1,0 +1,87 @@
+config.local.yaml
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+env/
+venv/
+ENV/
+*.env
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+slurm-*.out
+slurm-*.err
+
+# Python packaging
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Large data files
+*.vcf
+*.vcf.gz
+*.bcf
+*.bcf.csi
+*.tbi
+*.fa
+*.fasta
+*.fai
+*.npy
+*.npz
+*.gz
+*.tar
+*.zip
+*.csi
+*.bed
+*.bim
+*.fam
+*.nosex
+*.json
+*.blocks
+*.ld
+*.pickle
+*.frq
+*.txt
+
+*pangenome_real_snp_thin
+*pangenome_real_snp_thin_filtered
+*.det
+
+# Experiment outputs
+experiments/
+read_fastqs/
+plots/
+slurm/
+
+downloaded_tools/*.jar
+downloaded_tools/vg
+
+
+# Cache / checkpoints
+.cache/
+*.bak
+*.tmp
+
+# Editors
+.vscode/
+.idea/
+
+# Cluster-specific
+*.out
+*.err
+*.e*
+*.o*
+core.*

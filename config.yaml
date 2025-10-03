@@ -1,0 +1,2 @@
+python_env: "/path/to/env" #ex. ./envs/env-numpy-1-21
+base_path: "/path/to/this/directory" #ex. ./PanMixer/
