@@ -2,7 +2,8 @@ import numpy as np
 import pandas as pd
 import sys
 
-blocks_path = "/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/"
+from constants import BASE_PATH
+blocks_path = BASE_PATH + "/starting_data/"
 
 def compute_boundaries_and_blocks(chromosome):
     df = pd.read_csv(f"{blocks_path}/chr{chromosome}/blocks.blocks.det", delim_whitespace=True)

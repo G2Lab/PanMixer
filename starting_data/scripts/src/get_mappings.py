@@ -3,6 +3,8 @@ import sys
 import pickle
 import numpy as np
 
+from constants import BASE_PATH
+
 def produce_index(vcf_gz):
     mapping = {}
     line_count = 0
@@ -21,13 +23,13 @@ def produce_index(vcf_gz):
     return mapping         
 
 def get_mappings(chromosome):
-    pangenome_path = f"/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/chr{chromosome}/pangenome.vcf.gz"
-    thousand_g_phased = f"/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/chr{chromosome}/1000g_phased.vcf.gz"
-    thousand_g_alignments = f"/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/chr{chromosome}/1000g.vcf.gz"
+    pangenome_path = f"{BASE_PATH}/starting_data/chr{chromosome}/pangenome.vcf.gz"
+    thousand_g_phased = f"{BASE_PATH}/starting_data/chr{chromosome}/1000g_phased.vcf.gz"
+    thousand_g_alignments = f"{BASE_PATH}/starting_data/chr{chromosome}/1000g.vcf.gz"
 
-    pangenome_positions = np.load(f"/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/chr{chromosome}/pangenome_positions.npy")
-    thousand_g_phased_positions = np.load(f"/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/chr{chromosome}/1000g_phased_positions.npy")
-    thousand_g_alignments_positions = np.load(f"/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/chr{chromosome}/1000g_positions.npy")
+    pangenome_positions = np.load(f"{BASE_PATH}/starting_data/chr{chromosome}/pangenome_positions.npy")
+    thousand_g_phased_positions = np.load(f"{BASE_PATH}/starting_data/chr{chromosome}/1000g_phased_positions.npy")
+    thousand_g_alignments_positions = np.load(f"{BASE_PATH}/starting_data/chr{chromosome}/1000g_positions.npy")
 
     pangenome_mapping = produce_index(pangenome_path)
     thousand_g_phased_mapping = produce_index(thousand_g_phased)
@@ -55,12 +57,12 @@ def get_mappings(chromosome):
     pangenome_mask_for_pangeonome_to_thousand_g_phased = np.array(pangenome_mask_for_pangeonome_to_thousand_g_phased)
     thousand_g_mask_for_pangenome_to_thousand_g_phased = np.array(thousand_g_mask_for_pangenome_to_thousand_g_phased)
 
-    np.save(f"/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/chr{chromosome}/pangenome_mask.npy", pangenome_mask_for_pangeonome_to_thousand_g_phased)
-    np.save(f"/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/chr{chromosome}/thousand_g_phased_mask.npy", thousand_g_mask_for_pangenome_to_thousand_g_phased)
+    np.save(f"{BASE_PATH}/starting_data/chr{chromosome}/pangenome_mask.npy", pangenome_mask_for_pangeonome_to_thousand_g_phased)
+    np.save(f"{BASE_PATH}/starting_data/chr{chromosome}/thousand_g_phased_mask.npy", thousand_g_mask_for_pangenome_to_thousand_g_phased)
 
-    with open(f"/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/chr{chromosome}/pangenome_to_thousand_g_phased.pickle", "wb") as f:
+    with open(f"{BASE_PATH}/starting_data/chr{chromosome}/pangenome_to_thousand_g_phased.pickle", "wb") as f:
         pickle.dump(pangenome_to_thousand_g_phased, f)
-    with open(f"/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/chr{chromosome}/pangenome_to_thousand_g_alignments.pickle", "wb") as f:
+    with open(f"{BASE_PATH}/starting_data/chr{chromosome}/pangenome_to_thousand_g_alignments.pickle", "wb") as f:
         pickle.dump(pangenome_to_alignments, f)
 
     print(f"Mappings saved for chromosome {chromosome}")

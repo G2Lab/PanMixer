@@ -2,7 +2,8 @@ import numpy as np
 import pickle
 import sys
 
-base_path = "/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/"
+from constants import BASE_PATH
+base_path = BASE_PATH + "/starting_data/"
 
 def get_population_af(chromosome):
     possible_alleles = np.load(base_path + f"chr{chromosome}/num_alleles.npy")

@@ -6,7 +6,8 @@ import os
 
 from hmm_1000g import HaplotypeHMM
 
-base_path = "/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/"
+from constants import BASE_PATH
+base_path = f"{BASE_PATH}/starting_data/"
 INFINITY = 1e200
 
 def get_pmi(chromosome, subject_id):

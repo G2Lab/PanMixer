@@ -6,7 +6,9 @@ import os
 
 from hmm import HaplotypeHMM
 
-base_path = "/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/"
+from constants import BASE_PATH
+
+base_path = "{BASE_PATH}/starting_data/"
 INFINITY = 1e200
 
 def get_support(chromosome, subject_id):

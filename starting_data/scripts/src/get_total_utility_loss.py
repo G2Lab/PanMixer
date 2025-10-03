@@ -1,8 +1,8 @@
 import json
 import numpy as np
 
-subjects = np.loadtxt("/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/subjects.txt", dtype=str)
-STARTING_DATA_PATH = "/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data"
+subjects = np.loadtxt(f"{BASE_PATH}/starting_data/subjects.txt", dtype=str)
+STARTING_DATA_PATH = f"{BASE_PATH}/starting_data"
 
 
 true_max_utility_loss = {}

@@ -3,10 +3,11 @@ import sys
 import numpy as np
 import gzip
 
+from constants import BASE_PATH
 
 def get_possible_alleles(chromosome):
     num_alleles = []
-    pangenome_path = f"/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/chr{chromosome}/pangenome.vcf.gz"
+    pangenome_path = f"{BASE_PATH}/starting_data/chr{chromosome}/pangenome.vcf.gz"
     with gzip.open(pangenome_path, 'rt') as f:
         for line in f:
             if line.startswith('#'):
@@ -17,7 +18,7 @@ def get_possible_alleles(chromosome):
             alt_alleles = fields[4].split(',')
             num_alleles.append(len(alt_alleles) + 1)
     num_alleles = np.array(num_alleles)
-    np.save(f"/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/chr{chromosome}/num_alleles.npy", num_alleles)
+    np.save(f"{BASE_PATH}/starting_data/chr{chromosome}/num_alleles.npy", num_alleles)
     print(f"Num alleles saved to chr{chromosome}/num_alleles.npy")
 
 if __name__ == "__main__":
