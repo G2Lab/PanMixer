@@ -25,18 +25,18 @@ class HaplotypeHMM:
         self.chromosome = chromosome
         self.subject_id = subject_id
 
-        self.pangenome = np.load(f"{BASE_PATH}/chr{chromosome}/pangenome.npy")
-        self.pangenome_positions = np.load(f"{BASE_PATH}/chr{chromosome}/pangenome_positions.npy")
-        self.pangenome_subjects = np.load(f"{BASE_PATH}/chr{chromosome}/pangenome_subjects.npy")
+        self.pangenome = np.load(f"{BASE_PATH}/starting_data/chr{chromosome}/pangenome.npy")
+        self.pangenome_positions = np.load(f"{BASE_PATH}/starting_data/chr{chromosome}/pangenome_positions.npy")
+        self.pangenome_subjects = np.load(f"{BASE_PATH}/starting_data/chr{chromosome}/pangenome_subjects.npy")
 
         self.pangenome_haplotypes = np.concatenate(
             [self.pangenome[:, :, 0], self.pangenome[:, :, 1]], axis=0
         )
 
-        self.snp_positions = pickle.load(open(f"{BASE_PATH}/chr{chromosome}/pangenome_to_thousand_g_alignments.pickle", "rb")) #all alignments are snps
+        self.snp_positions = pickle.load(open(f"{BASE_PATH}/starting_data/chr{chromosome}/pangenome_to_thousand_g_alignments.pickle", "rb")) #all alignments are snps
         self.snp_positions_set = set(self.snp_positions.keys())
 
-        self.blocks = json.load(open(f"{BASE_PATH}/chr{chromosome}/blocks_dict.json"))
+        self.blocks = json.load(open(f"{BASE_PATH}/starting_data/chr{chromosome}/blocks_dict.json"))
 
         self.ne = self.pangenome.shape[0]
         self.r = 1.26

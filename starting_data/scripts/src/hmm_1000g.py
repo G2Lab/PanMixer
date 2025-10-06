@@ -38,9 +38,9 @@ class HaplotypeHMM:
         self.chromosome = chromosome
         self.subject_id = subject_id
 
-        self.thousand_g = np.load(f"{base_path}/chr{chromosome}/1000g.npy")
-        self.thousand_g_positions = np.load(f"{base_path}/chr{chromosome}/1000g_positions.npy")
-        self.thousand_g_subjects = np.load(f"{base_path}/chr{chromosome}/1000g_subjects.npy")
+        self.thousand_g = np.load(f"{base_path}/chr{chromosome}/PG.npy")
+        self.thousand_g_positions = np.load(f"{base_path}/chr{chromosome}/PG_positions.npy")
+        self.thousand_g_subjects = np.load(f"{base_path}/chr{chromosome}/PG_subjects.npy")
 
         self.thousand_g_haplotypes = np.concatenate(
             [self.thousand_g[:, :, 0], self.thousand_g[:, :, 1]], axis=0
