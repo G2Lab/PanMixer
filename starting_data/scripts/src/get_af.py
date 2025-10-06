@@ -2,7 +2,24 @@ import numpy as np
 import pickle
 import sys
 
-from constants import BASE_PATH
+import yaml
+import os
+def load_config():
+    # Load default template
+    with open("../config.yaml") as f:
+        config = yaml.safe_load(f)
+
+    # If user has a local config, override defaults
+    if os.path.exists("../config.local.yaml"):
+        with open("../config.local.yaml") as f:
+            local_config = yaml.safe_load(f)
+        config.update(local_config)
+
+    return config
+
+CONFIG = load_config()
+BASE_PATH = CONFIG["base_path"]
+
 base_path = BASE_PATH + "/starting_data/"
 
 def get_population_af(chromosome):

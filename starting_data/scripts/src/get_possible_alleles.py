@@ -4,6 +4,8 @@ import numpy as np
 import gzip
 
 import yaml
+import os
+
 def load_config():
     # Load default template
     with open("../config.yaml") as f:

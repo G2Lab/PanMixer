@@ -4,6 +4,8 @@ import pickle
 import numpy as np
 
 import yaml
+import os
+
 def load_config():
     # Load default template
     with open("../config.yaml") as f:

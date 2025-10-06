@@ -7,6 +7,7 @@ import os
 from hmm import HaplotypeHMM
 
 import yaml
+import os
 def load_config():
     # Load default template
     with open("../config.yaml") as f:
