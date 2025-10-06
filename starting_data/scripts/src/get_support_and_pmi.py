@@ -4,7 +4,7 @@ import numpy as np
 import pickle
 import os
 
-from hmm import HaplotypeHMM
+from hmm_1000g import HaplotypeHMM
 
 import yaml
 import os
