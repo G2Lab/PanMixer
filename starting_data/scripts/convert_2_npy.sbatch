@@ -13,7 +13,7 @@ CHR=$SLURM_ARRAY_TASK_ID
 CHR_DIR="./chr${CHR}"
 
 VCF1="${CHR_DIR}/pangenome.vcf.gz"
-VCF2="${CHR_DIR}/1000g.vcf.gz"
+VCF2="${CHR_DIR}/PG.vcf.gz"
 VCF3="${CHR_DIR}/1000g_phased.vcf.gz"
 
 python3 ../tools/VCFtoNP.py ${VCF1} true

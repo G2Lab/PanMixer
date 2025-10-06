@@ -7,4 +7,4 @@ bcftools index pangenome.vcf.gz
 ./scripts/remove_X.sh
 ./scripts/remove_chm13.sh
 
-sbatch scripts/split_pangenome.sbatch
+sbatch scripts/split_data.sbatch

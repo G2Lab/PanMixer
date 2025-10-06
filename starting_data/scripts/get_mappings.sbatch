@@ -7,8 +7,6 @@
 #SBATCH --output=get_mappings%a.out
 #SBATCH --error=get_mappings%a.err
 
-plink_path="/gpfs/commons/home/jblindenbach/tools/plink"
-
 CHR=$SLURM_ARRAY_TASK_ID
 CHR_DIR="./chr${CHR}"
 

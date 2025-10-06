@@ -25,7 +25,7 @@ def produce_index(vcf_gz):
 def get_mappings(chromosome):
     pangenome_path = f"{BASE_PATH}/starting_data/chr{chromosome}/pangenome.vcf.gz"
     thousand_g_phased = f"{BASE_PATH}/starting_data/chr{chromosome}/1000g_phased.vcf.gz"
-    thousand_g_alignments = f"{BASE_PATH}/starting_data/chr{chromosome}/1000g.vcf.gz"
+    thousand_g_alignments = f"{BASE_PATH}/starting_data/chr{chromosome}/PG.vcf.gz"
 
     pangenome_positions = np.load(f"{BASE_PATH}/starting_data/chr{chromosome}/pangenome_positions.npy")
     thousand_g_phased_positions = np.load(f"{BASE_PATH}/starting_data/chr{chromosome}/1000g_phased_positions.npy")

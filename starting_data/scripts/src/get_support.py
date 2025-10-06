@@ -8,7 +8,7 @@ from hmm import HaplotypeHMM
 
 from constants import BASE_PATH
 
-base_path = "{BASE_PATH}/starting_data/"
+base_path = f"{BASE_PATH}/starting_data/"
 INFINITY = 1e200
 
 def get_support(chromosome, subject_id):
