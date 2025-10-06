@@ -2,7 +2,24 @@ import sys
 import json
 import numpy as np
 
-blocks_path = "/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/"
+import yaml
+def load_config():
+    # Load default template
+    with open("../config.yaml") as f:
+        config = yaml.safe_load(f)
+
+    # If user has a local config, override defaults
+    if os.path.exists("../config.local.yaml"):
+        with open("../config.local.yaml") as f:
+            local_config = yaml.safe_load(f)
+        config.update(local_config)
+
+    return config
+
+CONFIG = load_config()
+BASE_PATH = CONFIG["base_path"]
+
+blocks_path = f"{BASE_PATH}/starting_data/"
     
 chromosome = int(sys.argv[1])
 

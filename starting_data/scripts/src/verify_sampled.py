@@ -4,10 +4,29 @@ import numpy as np
 import sys
 
 
-def verify_sample(chromosome, subject_id):
-    subject_haplotypes = np.load(f"/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/chr{chromosome}/subjects/{subject_id}/new_haplotypes.npy")
+import yaml
+def load_config():
+    # Load default template
+    with open("../config.yaml") as f:
+        config = yaml.safe_load(f)
 
-    possible_alleles = np.load(f"/gpfs/commons/groups/gursoy_lab/jblindenbach/Secret/PanMixer5/starting_data/chr{chromosome}/num_alleles.npy")
+    # If user has a local config, override defaults
+    if os.path.exists("../config.local.yaml"):
+        with open("../config.local.yaml") as f:
+            local_config = yaml.safe_load(f)
+        config.update(local_config)
+
+    return config
+
+CONFIG = load_config()
+BASE_PATH = CONFIG["base_path"]
+
+
+
+def verify_sample(chromosome, subject_id):
+    subject_haplotypes = np.load(f"{BASE_PATH}/starting_data/chr{chromosome}/subjects/{subject_id}/new_haplotypes.npy")
+
+    possible_alleles = np.load(f"{BASE_PATH}/starting_data/chr{chromosome}/num_alleles.npy")
 
     assert subject_haplotypes.shape[1] == 2, f"Subject {subject_id} does not have 2 haplotypes"
     assert subject_haplotypes.shape[0] == possible_alleles.shape[0], f"Subject {subject_id} does not have the same number of haplotypes as possible alleles"
