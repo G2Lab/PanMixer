@@ -29,7 +29,7 @@ def get_population_af(chromosome):
     pangenome_positions = np.load(base_path + f"chr{chromosome}/pangenome_positions.npy")
 
     thousand_g_variants = np.load(base_path + f"chr{chromosome}/1000g_phased.npy")
-    thousand_g_alignments_variants = np.load(base_path + f"chr{chromosome}/1000g.npy")
+    thousand_g_alignments_variants = np.load(base_path + f"chr{chromosome}/PG.npy")
 
     mappings_pangenome_to_thousand_g_phased = pickle.load(open(base_path + f"chr{chromosome}/pangenome_to_thousand_g_phased.pickle", "rb"))
     mappings_pangenome_to_thousand_g_alignments = pickle.load(open(base_path + f"chr{chromosome}/pangenome_to_thousand_g_alignments.pickle", "rb"))
