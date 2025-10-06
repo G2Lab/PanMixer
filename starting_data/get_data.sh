@@ -14,5 +14,4 @@ sbatch scripts/get_blocks.sbatch
 sbatch scripts/convert_2_npy.sbatch
 sbatch scripts/get_mappings.sbatch
 sbatch scripts/segment_blocks.sbatch
-
-
+sbatch scripts/get_pmi_utility.sbatch

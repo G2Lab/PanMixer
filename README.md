@@ -51,9 +51,26 @@ We suggest upon cloning this repository to copy the config, `cp config.yaml conf
 
 ## Dataset installation and preprocessing
 
-Run `./startings_data/
+`cd` into starting data directory `./startings_data/`. Run each command in `get_data.sh` one by one waiting for the previous command to finish. 
 
+WARNING: These links might break in the future 
 
+Commands:
+- `./scripts/get_pangenomes.sh`: Downloads the PGGB draft human pangenome
+- `./scripts/get_pangenome_alignments.sh`: Downloads the Pangenie callset
+- `./scripts/get_1000g_phased.sh`:
+- `bcftools index pangenome.vcf.gz`: Indexes the downloaded pangenome
+- `./scripts/remove_X.sh`: Removes any X chromosome data
+- `./scripts/remove_chm13.sh`: Removes the chm13 backbone
+- `sbatch scripts/split_data.sbatch`: Splits the data by chromosome
+- `sbatch scripts/get_num_alleles.sbatch`: Identifies the unique alleles and variants
+- `sbatch scripts/get_blocks.sbatch`: Computes the LD blocks
+- `sbatch scripts/convert_2_npy.sbatch`: Converts the VCF files into Numpy files for easier IO
+- `sbatch scripts/get_mappings.sbatch`: Computes variant mappings
+- `sbatch scripts/segment_blocks.sbatch`: Refines segmented blocks produced by plink
+- `sbatch scripts/get_pmi_utility.sbatch`: Computes the PMI and utility loss for each obfuscation move
+
+These commands take about 1-2 days to run. Please be patient.
 ## Quick Start
 
 ```bash
@@ -97,7 +114,6 @@ Parameters:
 - `--subjects_file` supplies a list of target individuals to obfuscate
 - `--baseline_unedited` runs an experiment with the original pangenome graphs (no edits) as a baseline
 - `--baseline_empty` runs an experiment with the subject removed
-
 
 #### **optimize**
 Run linear optimizer.
@@ -171,6 +187,8 @@ Prepare `vg giraffe` indices and run read mapping for all reads in `/read_fastqs
 python3 main.py vg_prep
 python3 main.py quick_align
 ```
+
+
 
 #### **gather_results**
 Aggregate outputs across experiments.
