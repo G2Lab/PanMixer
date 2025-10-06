@@ -46,7 +46,7 @@ def get_mappings(chromosome):
 
     pangenome_positions = np.load(f"{BASE_PATH}/starting_data/chr{chromosome}/pangenome_positions.npy")
     thousand_g_phased_positions = np.load(f"{BASE_PATH}/starting_data/chr{chromosome}/1000g_phased_positions.npy")
-    thousand_g_alignments_positions = np.load(f"{BASE_PATH}/starting_data/chr{chromosome}/1000g_positions.npy")
+    thousand_g_alignments_positions = np.load(f"{BASE_PATH}/starting_data/chr{chromosome}/PG_positions.npy")
 
     pangenome_mapping = produce_index(pangenome_path)
     thousand_g_phased_mapping = produce_index(thousand_g_phased)
