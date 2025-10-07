@@ -80,7 +80,7 @@ def plot_privacy_loss_two_boxes_per_metric():
     ax.set_xticks(centers, labels, rotation=0, ha="center")
 
     # Y axis: privacy loss in [0, 1]
-    ax.set_ylabel("Privacy Loss")
+    ax.set_ylabel("Privacy Risk")
     ax.set_yscale("log")   # <-- make y-axis logarithmic
 
        # Legend
