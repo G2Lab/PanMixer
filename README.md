@@ -5,6 +5,11 @@ This pipeline supports experiment initialization, optimization, stacking, VCF me
 
 This toolkit is designed to run in a cluster environment and currently supports execution via `slurm` using `sbatch`.
 
+## Code Availability
+This repository contains the full code used to generate the results in the manuscript 
+"Privacy-Preserving Pangenome Graphs". All scripts required for reproducing the experiments are 
+included in this repository.
+
 ---
 
 ## Overview
@@ -22,6 +27,13 @@ If not specified, the latest experiment is automatically selected.
 7. `gather_results`
 
 ---
+
+## Requirements
+- linux like operating system (tested on `Ubuntu v22.04`) with slurm / sbatch (tested on `slurm v24.05.2`)
+`Conda` (tested on `conda v4.5.11`)
+- Python3 (tested on `python v3.11`)
+- BCFTools (tested on `bcftools v1.21`)
+- Plink (tested on `plink v1.9b_6.21`)
 
 ## Installation
 
@@ -46,7 +58,7 @@ Defined in `config.yaml`, these constants need to be set before running any scri
 
 We suggest upon cloning this repository to copy the config, `cp config.yaml config.local.yaml` and changing the configurations in `config.local.yaml`
 
-> Note: Large data assets (pangenomes, read fastqs, 1000 Genomes datasets) are **not bundled** in this repository. You must download them yourselves. We provide scripts to help you :)
+> Note: Large data assets (pangenomes, read fastqs, 1000 Genomes datasets) are **not bundled** in this repository. You must download them yourselves. All data used in this study are publicly available. Download links are provided :)
 ---
 
 ## Dataset installation and preprocessing
@@ -93,6 +105,8 @@ python3 main.py --exp 0 ld_loss
 python3 main.py --exp 0 vg_prep
 python3 main.py --exp 0 quick_align
 ```
+
+These commands should run in 10 minutes depending on the size of the computing cluster.
 
 ## Command Reference
 
@@ -241,4 +255,8 @@ Parameters:
 - **Missing input files**: Verify `STARTING_DATA_PATH`, `--subjects_file`, and `--capacity_file`.
 - **VCF issues**: Ensure inputs are bgzipped (`.vcf.gz`) and indexed (`.tbi`).
 - **External tool errors**: Ensure `bcftools`, `tabix`, `plink` are installed and on PATH.
+---
+
+## License
+This software is released under the MIT License. See `LICENSE` for details.
 ---
