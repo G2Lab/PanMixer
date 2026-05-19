@@ -1,0 +1,103 @@
+import numpy as np
+import pickle
+import sys
+
+import yaml
+import os
+def load_config():
+    # Load default template
+    with open("../config.yaml") as f:
+        config = yaml.safe_load(f)
+
+    # If user has a local config, override defaults
+    if os.path.exists("../config.local.yaml"):
+        with open("../config.local.yaml") as f:
+            local_config = yaml.safe_load(f)
+        config.update(local_config)
+
+    return config
+
+CONFIG = load_config()
+BASE_PATH = CONFIG["base_path"]
+
+base_path = BASE_PATH + "/starting_data/"
+
+def get_population_af(chromosome):
+    possible_alleles = np.load(base_path + f"chr{chromosome}/num_alleles.npy")
+
+    pangenome_variants = np.load(base_path + f"chr{chromosome}/pangenome.npy")
+    pangenome_positions = np.load(base_path + f"chr{chromosome}/pangenome_positions.npy")
+
+    thousand_g_variants = np.load(base_path + f"chr{chromosome}/1000g_phased.npy")
+    thousand_g_alignments_variants = np.load(base_path + f"chr{chromosome}/PG.npy")
+
+    mappings_pangenome_to_thousand_g_phased = pickle.load(open(base_path + f"chr{chromosome}/pangenome_to_thousand_g_phased.pickle", "rb"))
+    mappings_pangenome_to_thousand_g_alignments = pickle.load(open(base_path + f"chr{chromosome}/pangenome_to_thousand_g_alignments.pickle", "rb"))
+
+    max_allele = np.max([np.max(pangenome_variants), np.max(thousand_g_variants), np.max(thousand_g_alignments_variants)])
+
+    print(f"Max allele: {max_allele}")
+
+    allele_counts = np.zeros((len(pangenome_positions), max_allele + 1), dtype=int)
+
+    for i in range(len(pangenome_positions)):
+        """
+        The flow of which dataset to use is as follows:
+        If the position (ref and alt alleles) is in 1000g phased, use that.
+        else if the position (ref and alt alleles) is in 1000g alignments, use that and the pangenome.
+        else use the pangenome.
+
+        This is because the 1000g phased dataset is the most reliable, and the 1000g alignments dataset is the second most reliable.
+        The pangenome is the least reliable and has the fewest samples.
+        """
+        if i in mappings_pangenome_to_thousand_g_phased:
+            valid_alleles = np.where(thousand_g_variants[:, mappings_pangenome_to_thousand_g_phased[i], :] != -1)
+            for j, hap in zip(valid_alleles[0], valid_alleles[1]):
+                allele_counts[i, thousand_g_variants[j, mappings_pangenome_to_thousand_g_phased[i], hap]] += 1
+        elif i in mappings_pangenome_to_thousand_g_alignments:
+            valid_alleles_alignments = np.where(thousand_g_alignments_variants[:, mappings_pangenome_to_thousand_g_alignments[i], :] != -1)
+            #print(valid_alleles_alignments)
+            valid_alleles_pangenome = np.where(pangenome_variants[:, i, :] != -1)
+
+            for j, hap in zip(valid_alleles_alignments[0], valid_alleles_alignments[1]):
+                allele_counts[i, thousand_g_alignments_variants[j, mappings_pangenome_to_thousand_g_alignments[i], hap]] += 1
+            for j, hap in zip(valid_alleles_pangenome[0], valid_alleles_pangenome[1]):
+                allele_counts[i, pangenome_variants[j, i, hap]] += 1
+        else:
+            valid_alleles_pangenome = np.where(pangenome_variants[:, i, :] != -1)
+            for j, hap in zip(valid_alleles_pangenome[0], valid_alleles_pangenome[1]):
+                allele_counts[i, pangenome_variants[j, i, hap]] += 1
+
+        assert np.all(allele_counts[i, possible_alleles[i]:] == 0), f"Allele counts for position {i} are not zero for alleles greater than the possible alleles. \
+             Allele counts: {allele_counts[i]}, Was in 1000g phased: {i in mappings_pangenome_to_thousand_g_phased}, \
+                Was in 1000g alignments: {i in mappings_pangenome_to_thousand_g_alignments}, \
+                Pangenome allele: {pangenome_variants[:,i]}, \
+                Thousand g phased allele: {thousand_g_variants[:,mappings_pangenome_to_thousand_g_phased[i]] if i in mappings_pangenome_to_thousand_g_phased else 'N/A'}, \
+                Thousand g alignments allele: {thousand_g_alignments_variants[:,mappings_pangenome_to_thousand_g_alignments[i]] if i in mappings_pangenome_to_thousand_g_alignments else 'N/A'}"
+    # For novel variants (not in 1000g phased or alignments), the numerator is the
+    # number of pangenome haplotypes carrying the allele (already in allele_counts
+    # via the pangenome loop above). The denominator is the number of 1000G
+    # haplotypes plus the number of pangenome haplotypes not represented in 1000G,
+    # i.e., 2 * (N_1000G + N_pangenome). None of the pangenome subjects appear in
+    # 1000g_phased, so all pangenome haplotypes count as "not represented." We pad
+    # the reference allele so that the row sum equals this denominator.
+    NUM_1000G_SUBJECTS = thousand_g_variants.shape[0]
+    NUM_PANGENOME_SUBJECTS = pangenome_variants.shape[0]
+    NOVEL_DENOMINATOR = 2 * (NUM_1000G_SUBJECTS + NUM_PANGENOME_SUBJECTS)
+    for i in range(len(pangenome_positions)):
+        if i not in mappings_pangenome_to_thousand_g_phased and i not in mappings_pangenome_to_thousand_g_alignments:
+            allele_counts[i, 0] += NOVEL_DENOMINATOR - allele_counts[i].sum()
+
+    denominators = np.sum(allele_counts, axis=1, keepdims=True)
+    allele_frequencies = allele_counts / denominators
+    # Save allele frequencies
+    np.save(base_path + f"chr{chromosome}/allele_frequencies.npy", allele_frequencies)
+    print(f"Allele frequencies saved for chromosome {chromosome}")
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python get_af.py <chromosome>")
+        sys.exit(1)
+    
+    chromosome = sys.argv[1]
+    get_population_af(chromosome)

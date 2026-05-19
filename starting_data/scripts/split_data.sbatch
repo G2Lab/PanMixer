@@ -1,0 +1,32 @@
+#!/bin/bash
+#SBATCH --job-name=split_chr
+#SBATCH --array=1-22
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=20G
+#SBATCH --time=08:00:00
+#SBATCH --output=split_chr_%a.out
+#SBATCH --error=split_chr_%a.err
+
+source /apps/ohpc/pub/apps/conda/3/etc/profile.d/conda.sh
+conda activate genomics2
+
+CHR=$SLURM_ARRAY_TASK_ID
+CHR_DIR=chr${CHR}
+
+# Create the output directory for this chromosome
+mkdir -p ${CHR_DIR}
+
+# Input files
+VCF1="pangenome_no_X_no_chm13.vcf.gz"
+VCF2="PG.vcf.gz"
+
+# Output files
+OUT1="${CHR_DIR}/pangenome.vcf.gz"
+OUT2="${CHR_DIR}/PG.vcf.gz"
+
+# Split using bcftools
+bcftools view --regions grch38#chr${CHR} ${VCF1} -Oz -o ${OUT1}
+bcftools index ${OUT1}
+
+bcftools view --regions chr${CHR} ${VCF2} -Oz -o ${OUT2}
+bcftools index ${OUT2}

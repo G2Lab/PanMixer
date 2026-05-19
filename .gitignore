@@ -1,0 +1,113 @@
+config.local.yaml
+
+# Claude Code tool state
+.claude/
+
+# Scratch / debug / temp Python
+tmp_*.py
+test_*.png
+test_*.pdf
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+env/
+venv/
+ENV/
+*.env
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# OS metadata
+.DS_Store
+._*
+Thumbs.db
+
+# Logs
+*.log
+slurm-*.out
+slurm-*.err
+
+# Python packaging
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Large data files
+*.vcf
+*.vcf.gz
+*.bcf
+*.bcf.csi
+*.tbi
+*.fa
+*.fasta
+*.fai
+*.npy
+*.npz
+*.gz
+*.tar
+*.zip
+*.csi
+*.bed
+*.bim
+*.fam
+*.nosex
+*.json
+*.blocks
+*.ld
+*.pickle
+*.frq
+*.txt
+
+!starting_data/capacity_files/*.txt
+!starting_data/subjects_files/*.txt
+
+*pangenome_real_snp_thin
+*pangenome_real_snp_thin_filtered
+*.det
+
+# Experiment outputs
+experiments/
+experiments/*
+read_fastqs/
+read_fastqs/*
+plots/
+plots/*
+slurm/
+slurm/*
+
+# Downloaded / generated data (use starting_data/scripts/get_genetic_maps.sh to obtain)
+starting_data/1000-genomes-genetic-maps/
+*.interpolated_genetic_map
+
+# Scratch / intermediate analysis output
+starting_data/chr21/test_isec/
+starting_data/HPRC_v2/
+logs/
+logs/*
+
+downloaded_tools/*.jar
+downloaded_tools/vg
+
+
+# Cache / checkpoints
+.cache/
+*.bak
+*.tmp
+
+# Editors
+.vscode/
+.idea/
+
+# Cluster-specific
+*.out
+*.err
+*.e*
+*.o*
+core.*

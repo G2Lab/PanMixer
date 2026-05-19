@@ -1,0 +1,16 @@
+name: genomics2
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - bcftools
+  - pip
+  - pip:
+    - numpy
+    - pandas
+    - scipy
+    - scikit-learn
+    - matplotlib
+    - pyyaml
