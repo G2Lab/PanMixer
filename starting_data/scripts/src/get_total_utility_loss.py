@@ -2,23 +2,7 @@ import json
 import numpy as np
 import time
 
-import yaml
-import os
-def load_config():
-    # Load default template
-    with open("../config.yaml") as f:
-        config = yaml.safe_load(f)
-
-    # If user has a local config, override defaults
-    if os.path.exists("../config.local.yaml"):
-        with open("../config.local.yaml") as f:
-            local_config = yaml.safe_load(f)
-        config.update(local_config)
-
-    return config
-
-CONFIG = load_config()
-BASE_PATH = CONFIG["base_path"]
+from paths import BASE_PATH
 
 subjects = np.loadtxt(f"{BASE_PATH}/starting_data/subjects.txt", dtype=str)
 STARTING_DATA_PATH = f"{BASE_PATH}/starting_data"

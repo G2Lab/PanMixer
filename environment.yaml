@@ -1,4 +1,4 @@
-name: genomics2
+name: panmixer
 channels:
   - bioconda
   - conda-forge
@@ -6,6 +6,8 @@ channels:
 dependencies:
   - python=3.11
   - bcftools
+  - ortools
+  - plink
   - pip
   - pip:
     - numpy
@@ -13,4 +15,3 @@ dependencies:
     - scipy
     - scikit-learn
     - matplotlib
-    - pyyaml

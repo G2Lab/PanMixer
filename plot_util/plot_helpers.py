@@ -8,7 +8,7 @@ multiple plotting files.
 import numpy as np
 import pandas as pd
 
-from my_color_palette import FONT
+from plot_util.my_color_palette import FONT
 from constants import DEMOGRAPHICS_CSV
 
 # ── Read-mapping metric definitions ──────────────────────────────────────────

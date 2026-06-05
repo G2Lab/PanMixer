@@ -6,9 +6,6 @@
 #SBATCH --output=remove_chm13.out
 #SBATCH --error=remove_chm13.err
 
-source /apps/ohpc/pub/apps/conda/3/etc/profile.d/conda.sh
-conda activate genomics2
-
 INPUT="pangenome_no_X.vcf.gz"
 OUTPUT="pangenome_no_X_no_chm13.vcf.gz"
 

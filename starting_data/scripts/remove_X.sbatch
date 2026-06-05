@@ -6,9 +6,6 @@
 #SBATCH --output=remove_X.out
 #SBATCH --error=remove_X.err
 
-source /apps/ohpc/pub/apps/conda/3/etc/profile.d/conda.sh
-conda activate genomics2
-
 INPUT="pangenome.vcf.gz"
 OUTPUT="pangenome_no_X.vcf.gz"
 

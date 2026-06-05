@@ -7,9 +7,6 @@
 #SBATCH --output=split_chr_%a.out
 #SBATCH --error=split_chr_%a.err
 
-source /apps/ohpc/pub/apps/conda/3/etc/profile.d/conda.sh
-conda activate genomics2
-
 CHR=$SLURM_ARRAY_TASK_ID
 CHR_DIR=chr${CHR}
 

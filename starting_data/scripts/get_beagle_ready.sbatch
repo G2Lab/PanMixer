@@ -10,9 +10,6 @@
 CHR=$SLURM_ARRAY_TASK_ID
 CHR_DIR="./chr${CHR}"
 
-source /apps/ohpc/pub/apps/conda/3/etc/profile.d/conda.sh
-conda activate genomics2
-
 out_no_missing="${CHR_DIR}/1000g_snps_no_missing.vcf.gz"
 out_no_missing_renamed="${CHR_DIR}/1000g_snps_no_missing_renamed.vcf.gz"
 out_no_missing_renamed_norm="${CHR_DIR}/1000g_snps_no_missing_renamed_norm.vcf.gz"

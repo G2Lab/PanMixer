@@ -7,9 +7,6 @@
 #SBATCH --output=remove_dup_%a.out
 #SBATCH --error=remove_dup_%a.err
 
-source /apps/ohpc/pub/apps/conda/3/etc/profile.d/conda.sh
-conda activate genomics2
-
 CHR=$SLURM_ARRAY_TASK_ID
 CHR_DIR="./chr${CHR}"
 

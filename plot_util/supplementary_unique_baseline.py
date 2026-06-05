@@ -5,8 +5,8 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score
 
-from tools.utils import load_data_all
-from my_color_palette import apply_style, MAIN_COLORS, GOOD_COLOR, BAD_COLOR
+from tools.common.utils import load_data_all
+from plot_util.my_color_palette import apply_style, MAIN_COLORS, GOOD_COLOR, BAD_COLOR
 import matplotlib.ticker as mtick
 import matplotlib.ticker as ticker
 
