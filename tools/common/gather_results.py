@@ -11,7 +11,7 @@ from constants import SIZE_OF_SVS, TYPES_OF_SVS, TYPES_OF_RECONSTRUCTION, EXPERI
 from constants import PANGENIE_COLUMNS, AF_PATH, PANGENOME_HAPLOTYPES, PANGENOME_SUBJECTS, PANGENOME_SUPPORT
 from constants import ONEK_NPY, POPULATION_AF_FREQS, NUM_1000G_SUBJECTS
 from constants import STATS_FILE_SCHEMA
-from constants import VERBOSE, MAX_LD_DISTANCE_KBP, STARTING_DATA_PATH
+from constants import VERBOSE, STARTING_DATA_PATH
 
 def add_ld_results_by_chromosome(df, experiment_number, chromosome):
     if not os.path.exists(EXPERIMENT_PATH + f"/exp_{experiment_number}/data/chr1/0/ld_loss.txt"):
@@ -102,49 +102,6 @@ def add_af_results(dfs, experiment_number, overwrite=False):
     print("[gather] af_loss: gathering...")
     for i in range(1, 23):
         dfs[i] = add_af_results_by_chromosome(dfs[i], experiment_number, i)
-    return dfs
-
-def add_maf_ld_results_chromosome(df, experiment_number, chromosome):
-    if not os.path.exists(EXPERIMENT_PATH + f"/exp_{experiment_number}/data/chr{chromosome}/0/results-maf.csv"):
-        return df
-    
-    maf_kl = []
-    maf_wd = []
-
-    for i in range(len(df)):
-        maf_kl.append(pd.read_csv(EXPERIMENT_PATH + f"/exp_{experiment_number}/data/chr{chromosome}/{i}/results-maf.csv")["kl"].values[0])
-        maf_wd.append(pd.read_csv(EXPERIMENT_PATH + f"/exp_{experiment_number}/data/chr{chromosome}/{i}/results-maf.csv")["wd"].values[0])
-
-    ld_euclidean = []
-    
-    for i in range(len(df)):
-        ld_csv = pd.read_csv(EXPERIMENT_PATH + f"/exp_{experiment_number}/data/chr{chromosome}/{i}/results-ld-decay.csv")
-        real_ld = ld_csv["real_y"].values
-        syn_ld = ld_csv["syn_y"].values
-
-        real_ld = real_ld[:int(MAX_LD_DISTANCE_KBP * 1000)]
-        syn_ld = syn_ld[:int(MAX_LD_DISTANCE_KBP * 1000)]
-
-        ld_euclidean.append(np.linalg.norm(real_ld - syn_ld, ord=1))
-
-    df["maf_kl"] = maf_kl
-    df["maf_wd"] = maf_wd
-
-    df["ld_euclidean"] = ld_euclidean
-
-    return df
-
-
-def add_maf_ld_results(dfs, experiment_number, overwrite=False):
-    if not overwrite and "maf_kl" in dfs[1].columns:
-        print("[gather] maf_ld: skipping (already exists, use --overwrite to rerun)")
-        return dfs
-    if not os.path.exists(EXPERIMENT_PATH + f"/exp_{experiment_number}/data/chr1/0/results-maf.csv"):
-        print("[gather] maf_ld: skipping (no data found)")
-        return dfs
-    print("[gather] maf_ld: gathering...")
-    for i in range(1, 23):
-        dfs[i] = add_maf_ld_results_chromosome(dfs[i], experiment_number, i)
     return dfs
 
 def add_stacker_results_chromosome(df, experiment_number, chromosome):
@@ -282,7 +239,7 @@ def add_personalized_giraffe_results(dfs, experiment_number, overwrite = False):
     dfs[21] = add_personalized_giraffe_results_by_chromosome(dfs[21], experiment_number, 21)
     return dfs
 
-def gather_results(experiment_number, overwrite, get_just_optimizer, get_index, get_just_gap_score, get_just_stacker, get_just_af_loss, get_just_pangenie_stats, get_just_ld_loss, get_just_accuracy_stats, get_just_maf_ld, get_just_giraffe, get_just_filtered_giraffe=False, get_just_personalized_giraffe=False, get_just_MIA_privacy=False):
+def gather_results(experiment_number, overwrite, get_just_optimizer, get_index, get_just_gap_score, get_just_stacker, get_just_af_loss, get_just_pangenie_stats, get_just_ld_loss, get_just_accuracy_stats, get_just_giraffe, get_just_filtered_giraffe=False, get_just_personalized_giraffe=False, get_just_MIA_privacy=False):
     data = load_data_multichromosome(experiment_number)
 
     if get_just_optimizer:
@@ -299,11 +256,6 @@ def gather_results(experiment_number, overwrite, get_just_optimizer, get_index, 
         store_data_multichromosome(data, experiment_number)
         return
     
-    if get_just_maf_ld:
-        data = add_maf_ld_results(data, experiment_number, overwrite)
-        store_data_multichromosome(data, experiment_number)
-        return
-
     if get_just_af_loss:
         data = add_af_results(data, experiment_number, overwrite)
         store_data_multichromosome(data, experiment_number)
@@ -372,7 +324,6 @@ def gather_results(experiment_number, overwrite, get_just_optimizer, get_index, 
     gather_steps = [
         ("optimizer", lambda: add_optimizer_results(data, experiment_number, overwrite)),
         ("stacker", lambda: add_stacker_results(data, experiment_number, overwrite)),
-        ("maf_ld", lambda: add_maf_ld_results(data, experiment_number, overwrite)),
         ("af_loss", lambda: add_af_results(data, experiment_number, overwrite)),
         ("ld_loss", lambda: add_ld_results(data, experiment_number, overwrite)),
         ("giraffe", lambda: add_giraffe_results(data, experiment_number, overwrite)),

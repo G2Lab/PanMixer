@@ -327,7 +327,8 @@ def produced_concat_df(dfs, experiment_number):
 
 def aggregate_score_metric(experiment_number, metric, n, obfuscated_subjects):
     scores = np.zeros(n)
-    subjects_30x = list(np.load(STARTING_DATA_PATH + "/chr1/1000g_30x_phased_subjects.npy"))
+    subjects_30x_path = STARTING_DATA_PATH + "/chr1/1000g_30x_phased_subjects.npy"
+    subjects_30x = list(np.load(subjects_30x_path)) if os.path.exists(subjects_30x_path) else None
     subjects_phased = list(np.load(STARTING_DATA_PATH + "/chr1/" + ONEK_PHASED_SUBJECTS_NPY))
     print("Aggregating metric", metric)
 
@@ -345,12 +346,13 @@ def aggregate_score_metric(experiment_number, metric, n, obfuscated_subjects):
             scores_all += np.load(EXPERIMENT_PATH + f"/exp_{experiment_number}/data/chr{chrom}/{i}/{metric}.npy")
             g_to_gstar += np.load(EXPERIMENT_PATH + f"/exp_{experiment_number}/data/chr{chrom}/{i}/{metric}_self.npy")
 
-        if scores_all.shape[0] == len(subjects_30x):
+        if subjects_30x is not None and scores_all.shape[0] == len(subjects_30x):
             thousand_g_subjects = subjects_30x
         elif scores_all.shape[0] == len(subjects_phased):
             thousand_g_subjects = subjects_phased
         else:
-            raise AssertionError(f"Scores length {scores_all.shape[0]} matches neither 30x ({len(subjects_30x)}) nor phased ({len(subjects_phased)}) for metric {metric} at index {i}")
+            subjects_30x_count = len(subjects_30x) if subjects_30x is not None else "unavailable"
+            raise AssertionError(f"Scores length {scores_all.shape[0]} matches neither 30x ({subjects_30x_count}) nor phased ({len(subjects_phased)}) for metric {metric} at index {i}")
 
         if obfuscated_subjects[i] in thousand_g_subjects:
             subject_index = thousand_g_subjects.index(obfuscated_subjects[i])

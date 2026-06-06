@@ -95,10 +95,6 @@ AGGREGATION_DICTIONARY = {
     "number_of_moves": "sum",
     "percent_shared_snps": "mean",
 
-    "maf_wd": "mean",
-    "maf_kl": "mean",
-    "ld_euclidean": "mean",
-
     "ld_sums": "sum",
     "ld_counts": "sum",
 

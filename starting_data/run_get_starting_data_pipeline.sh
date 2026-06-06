@@ -79,17 +79,20 @@ JOB6=$(submit_dependent scripts/convert_2_npy.sbatch "$JOB5")
 # 8. Compute variant mappings
 JOB7=$(submit_dependent scripts/get_mappings.sbatch "$JOB6")
 
-# 9. Refine segmented blocks
-JOB8=$(submit_dependent scripts/segment_blocks.sbatch "$JOB7")
+# 9. Build bi-allelic SNP masks for gap-score aggregation
+JOB8=$(submit_dependent scripts/build_biallelic_snp_mask.sbatch "$JOB7")
 
-# 10. Compute allele frequencies
-JOB9=$(submit_dependent scripts/get_af.sbatch "$JOB8")
+# 10. Refine segmented blocks
+JOB9=$(submit_dependent scripts/segment_blocks.sbatch "$JOB8")
 
-# 11. Compute PMI and utility loss
-JOB10=$(submit_dependent scripts/get_pmi_utility.sbatch "$JOB9")
+# 11. Compute allele frequencies
+JOB10=$(submit_dependent scripts/get_af.sbatch "$JOB9")
 
-# 12. Compute total utility loss JSON
-JOB11=$(submit_dependent scripts/get_total_utility.sbatch "$JOB10")
+# 12. Compute PMI and utility loss
+JOB11=$(submit_dependent scripts/get_pmi_utility.sbatch "$JOB10")
+
+# 13. Compute total utility loss JSON
+JOB12=$(submit_dependent scripts/get_total_utility.sbatch "$JOB11")
 
 echo "=== All jobs submitted ==="
-echo "Final job ID: $JOB11"
+echo "Final job ID: $JOB12"

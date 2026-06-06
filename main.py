@@ -57,7 +57,6 @@ def main():
     gather_results_parser.add_argument("--ld_loss", action="store_true", help="Gather just AF loss results", default=False)
     gather_results_parser.add_argument("--pangenie_stats", action="store_true", help="Gather just pangenie stats results", default=False)
     gather_results_parser.add_argument("--accuracy_stats", action="store_true", help="Gather just accuracy stats results", default=False)
-    gather_results_parser.add_argument("--maf_ld", action="store_true", help="Gather just maf ld", default=False)
     gather_results_parser.add_argument("--giraffe", action="store_true", help="Gather just giraffe", default=False)
     gather_results_parser.add_argument("--filtered_giraffe", action="store_true", help="Gather just filtered giraffe", default=False)
     gather_results_parser.add_argument("--personalized_giraffe", action="store_true", help="Gather just personalized giraffe", default=False)
@@ -114,7 +113,7 @@ def main():
     elif args.tool == "optimize":
         optimizer(args.baseline_unique, args.fixed_param, exp, args.seed)
     elif args.tool == "gather_results":
-        gather_results(exp, args.overwrite, args.optimizer, args.reindex, args.gap_score, args.stacker, args.af_loss, args.pangenie_stats, args.ld_loss, args.accuracy_stats, args.maf_ld, args.giraffe, args.filtered_giraffe, args.personalized_giraffe, args.MIA_privacy)
+        gather_results(exp, args.overwrite, args.optimizer, args.reindex, args.gap_score, args.stacker, args.af_loss, args.pangenie_stats, args.ld_loss, args.accuracy_stats, args.giraffe, args.filtered_giraffe, args.personalized_giraffe, args.MIA_privacy)
     elif args.tool == "stacker":
         stacker(args.strategy, exp)
     elif args.tool == "gap_score":

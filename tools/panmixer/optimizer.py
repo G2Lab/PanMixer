@@ -218,8 +218,8 @@ def main():
         assert np.all(weights >= 0), "Weights must be non-negative"
         assert np.all(values >= 0), "Values must be non-negative"
 
-        maximum_pmi = np.sum(values)
-        assert maximum_pmi > 0, "Max PMI can't be 0"
+        maximum_pmi_gain = np.sum(values)
+        assert maximum_pmi_gain > 0, "Max PMI can't be 0"
 
         target_utility_loss = capacity * maximum_utility_loss
 

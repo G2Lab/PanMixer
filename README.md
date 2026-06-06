@@ -69,6 +69,7 @@ The pipeline runs:
 - `sbatch scripts/get_blocks.sbatch`: Computes the LD blocks
 - `sbatch scripts/convert_2_npy.sbatch`: Converts the VCF files into Numpy files for easier IO
 - `sbatch scripts/get_mappings.sbatch`: Computes variant mappings
+- `sbatch scripts/build_biallelic_snp_mask.sbatch`: Builds bi-allelic SNP masks for gap-score aggregation
 - `sbatch scripts/segment_blocks.sbatch`: Refines segmented blocks produced by plink
 - `sbatch scripts/get_af.sbatch`: Computes allele frequencies
 - `sbatch scripts/get_pmi_utility.sbatch`: Computes the PMI and utility loss for each obfuscation move
