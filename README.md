@@ -42,7 +42,7 @@ conda activate panmixer
 
 Run commands from the cloned repository with the `panmixer` conda environment activated. PanMixer infers repository-relative paths from the source tree.
 
-Slurm jobs should be submitted from the activated `panmixer` environment. Generated experiment jobs prepend the active Python environment's `bin/` directory to `PATH`, and the starting-data pipeline submits jobs with `sbatch --export=ALL` so `bcftools`, `plink`, and `python3` resolve from that environment.
+Slurm jobs should be submitted from the activated `panmixer` environment. Generated experiment jobs prepend the active Python environment's `bin/` directory to `PATH`, and the starting-data pipeline resolves the `panmixer` environment Python and exports it as `PYTHON` when submitting jobs with `sbatch --export=ALL`.
 
 > Note: Large data assets (pangenomes, read fastqs, 1000 Genomes datasets) are **not bundled** in this repository. You must download them yourselves. We provide scripts to help you :)
 ---

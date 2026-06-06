@@ -6,10 +6,10 @@ channels:
 dependencies:
   - python=3.11
   - bcftools
-  - ortools
   - plink
   - pip
   - pip:
+    - ortools
     - numpy
     - pandas
     - scipy

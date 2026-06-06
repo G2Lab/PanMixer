@@ -16,6 +16,6 @@ VCF1="${CHR_DIR}/pangenome.vcf.gz"
 VCF2="${CHR_DIR}/PG.vcf.gz"
 VCF3="${CHR_DIR}/1000g_phased.vcf.gz"
 
-$PYTHON ../tools/VCFtoNP.py ${VCF1} true
-$PYTHON ../tools/VCFtoNP.py ${VCF2} false
-$PYTHON ../tools/VCFtoNP.py ${VCF3} true
+$PYTHON ../tools/common/VCFtoNP.py ${VCF1} true
+$PYTHON ../tools/common/VCFtoNP.py ${VCF2} false
+$PYTHON ../tools/common/VCFtoNP.py ${VCF3} true

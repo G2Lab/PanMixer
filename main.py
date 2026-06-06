@@ -95,7 +95,7 @@ def main():
 
     quick_align_parser = tools.add_parser("quick_align", help="Quick alignment with chr21 reads")
 
-    filtered_read_mapping_parser = tools.add_parser("filtered_read_mapping", help="Read mapping to AF>=10% filtered graph")
+    filtered_read_mapping_parser = tools.add_parser("filtered_read_mapping", help="Read mapping to AF>=10%% filtered graph")
 
     personalized_read_mapping_parser = tools.add_parser("personalized_read_mapping", help="Read mapping to personalized (unfiltered) graph")
 

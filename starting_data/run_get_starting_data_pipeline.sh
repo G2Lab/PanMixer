@@ -6,6 +6,29 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
+resolve_panmixer_python() {
+    if [ -n "${PYTHON:-}" ]; then
+        return
+    fi
+
+    local env_prefix=""
+    if command -v conda >/dev/null 2>&1; then
+        env_prefix=$(conda info --envs | awk '$1 == "panmixer" {print $NF; exit}')
+    fi
+
+    if [ -n "$env_prefix" ] && [ -x "$env_prefix/bin/python" ]; then
+        PYTHON="$env_prefix/bin/python"
+        PYTHONNOUSERSITE="${PYTHONNOUSERSITE:-1}"
+    else
+        PYTHON="python3"
+    fi
+
+    export PYTHON
+    export PYTHONNOUSERSITE
+}
+
+resolve_panmixer_python
+
 submit_dependent() {
     local script="$1"
     local dep_jobid="${2:-}"
