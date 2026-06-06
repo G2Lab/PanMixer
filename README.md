@@ -28,56 +28,59 @@ If not specified, the latest experiment is automatically selected.
 ## Installation
 
 ```bash
-# Create and activate an environment
-conda create -y -n panmixer python=3.11
+# Create and activate the environment
+conda env create -f environment.yaml
 conda activate panmixer
-# or use venv:
-# python -m venv .venv && source .venv/bin/activate
 
-# Install Python dependencies
-pip install -r requirements.txt
+# Update an existing environment after dependency changes
+# conda env update -f environment.yaml --prune
 
-# Ensure external tools (bcftools, tabix, plink) are available in PATH
+# Ensure external tools not provided by the conda environment are available in PATH
 ```
 
 ## Data & Paths
 
-Defined in `config.yaml`, these constants need to be set before running any scripts
-- `python_env` – path to python environment (ex: ./envs/panmixer-env)
-- `base_path` – base path to root of this directory (ex: ./PanMixer)
+Run commands from the cloned repository with the `panmixer` conda environment activated. PanMixer infers repository-relative paths from the source tree.
 
-We suggest upon cloning this repository to copy the config, `cp config.yaml config.local.yaml` and changing the configurations in `config.local.yaml`
+Slurm jobs should be submitted from the activated `panmixer` environment. Generated experiment jobs prepend the active Python environment's `bin/` directory to `PATH`, and the starting-data pipeline resolves the `panmixer` environment Python and exports it as `PYTHON` when submitting jobs with `sbatch --export=ALL`.
 
 > Note: Large data assets (pangenomes, read fastqs, 1000 Genomes datasets) are **not bundled** in this repository. You must download them yourselves. We provide scripts to help you :)
 ---
 
 ## Dataset installation and preprocessing
 
-`cd` into the starting-data directory `./starting_data/`. Run each command in `get_data.sh` one at a time, waiting for the previous command to finish.
+`cd` into the starting-data directory `./starting_data/` and run the starting-data pipeline:
+
+```bash
+./run_get_starting_data_pipeline.sh
+```
 
 > WARNING: External download links may break over time. If a script fails, check the source URL inside it before retrying.
 
-Commands:
+The pipeline runs:
 - `./scripts/get_pangenomes.sh`: Downloads the PGGB draft human pangenome
 - `./scripts/get_pangenie_alignments.sh`: Downloads the Pangenie callset
 - `./scripts/get_1000g_phased.sh`: Downloads the 1000 Genomes Project phased panel
-- `bcftools index pangenome.vcf.gz`: Indexes the downloaded pangenome
-- `./scripts/remove_X.sh`: Removes any X chromosome data
-- `./scripts/remove_chm13.sh`: Removes the chm13 backbone
+- `bcftools index -f pangenome.vcf.gz`: Indexes the downloaded pangenome
+- `sbatch scripts/remove_X.sbatch`: Removes any X chromosome data
+- `sbatch scripts/remove_chm13.sbatch`: Removes the chm13 backbone
 - `sbatch scripts/split_data.sbatch`: Splits the data by chromosome
 - `sbatch scripts/get_num_alleles.sbatch`: Identifies the unique alleles and variants
 - `sbatch scripts/get_blocks.sbatch`: Computes the LD blocks
 - `sbatch scripts/convert_2_npy.sbatch`: Converts the VCF files into Numpy files for easier IO
 - `sbatch scripts/get_mappings.sbatch`: Computes variant mappings
+- `sbatch scripts/build_biallelic_snp_mask.sbatch`: Builds bi-allelic SNP masks for gap-score aggregation
 - `sbatch scripts/segment_blocks.sbatch`: Refines segmented blocks produced by plink
+- `sbatch scripts/get_af.sbatch`: Computes allele frequencies
 - `sbatch scripts/get_pmi_utility.sbatch`: Computes the PMI and utility loss for each obfuscation move
+- `sbatch scripts/get_total_utility.sbatch`: Computes the total utility loss summary
 
 These commands take about 1–2 days to run end-to-end. Please be patient.
 
 To make the sampling step reproducible during preprocessing, pass a base seed to the SLURM job:
 
 ```bash
-sbatch --export=SEED=123 scripts/get_pmi_utility.sbatch
+SEED=127 ./run_get_starting_data_pipeline.sh
 ```
 
 Each array task derives its own seed from this base seed, so different chromosome/subject tasks do not reuse the same random stream.
@@ -122,13 +125,7 @@ The HMM and allele-frequency resampling paths support explicit seeds. Without a 
 For the standalone obfuscation tool:
 
 ```bash
-python3 tools/obfuscate.py starting_data HG00438 0.1 21 obfuscation_output --seed 123
-```
-
-For the obfuscation SLURM wrapper:
-
-```bash
-sbatch --export=DATA_DIR=/path/to/starting_data,SUBJECT=HG00438,CAPACITY=0.1,OUTPUT_DIR=/path/to/output,SEED=123 tools/obfuscate.sbatch
+python3 tools/panmixer/obfuscate.py starting_data HG00438 0.1 21 obfuscation_output --seed 123
 ```
 
 For starting-data PMI/utility precomputation:
@@ -259,16 +256,6 @@ python3 main.py --exp 0 create_multitarget_vcfs --target_exp 1
 Parameters:
 - `--target_exp` the experiment number to use as the target layout
 
-#### **gap_threshold**
-Analyze gap score privacy thresholds across a range of pangenome sizes. Useful for understanding how privacy guarantees scale with pangenome size.
-
-```bash
-python3 main.py --exp 0 gap_threshold --pangenome_sizes 50,100,250,500,1000,2000
-```
-
-Parameters:
-- `--pangenome_sizes` comma-separated list of pangenome sizes to test (default: `50,100,250,500,1000,1500,2000,2500,3000`)
-
 #### **gather_results**
 Aggregate outputs across experiments.
 
@@ -309,7 +296,6 @@ Parameters:
         ↓
 [ downstream analyses ]
    ├─ gap_score / gap_score_all
-   ├─ gap_threshold
    ├─ af_loss / ld_loss
    ├─ beagle / accuracy_stats
    ├─ vg_prep / quick_align
@@ -337,5 +323,5 @@ Parameters:
 - **No experiment found**: Run `experiment_starter` first.
 - **Missing input files**: Verify `STARTING_DATA_PATH`, `--subjects_file`, and `--capacity_file`.
 - **VCF issues**: Ensure inputs are bgzipped (`.vcf.gz`) and indexed (`.tbi`).
-- **External tool errors**: Ensure `bcftools`, `tabix`, `plink` are installed and on PATH.
+- **External tool errors**: Ensure required command-line tools are installed and on PATH.
 ---

@@ -7,8 +7,6 @@
 #SBATCH --output=get_blocks%a.out
 #SBATCH --error=get_blocks%a.err
 
-module load plink/1.9
-
 CHR=$SLURM_ARRAY_TASK_ID
 CHR_DIR="./chr${CHR}"
 

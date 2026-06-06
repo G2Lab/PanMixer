@@ -3,8 +3,7 @@ import json
 import pickle
 from scipy.special import logsumexp
 
-import yaml
-import os
+from paths import BASE_PATH
 
 effective_N = 1.0 / 10_000.0
 
@@ -16,22 +15,6 @@ def logsubexp(a, b):
         raise ValueError("logsubexp requires a > b elementwise")
 
     return a + np.log1p(-np.exp(b - a))
-
-def load_config():
-    # Load default template
-    with open("../config.yaml") as f:
-        config = yaml.safe_load(f)
-
-    # If user has a local config, override defaults
-    if os.path.exists("../config.local.yaml"):
-        with open("../config.local.yaml") as f:
-            local_config = yaml.safe_load(f)
-        config.update(local_config)
-
-    return config
-
-CONFIG = load_config()
-BASE_PATH = CONFIG["base_path"]
 
 class HaplotypeHMM:
     def __init__(self, chromosome, subject_id):

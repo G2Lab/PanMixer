@@ -2,8 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes, mark_inset
 
-from tools.utils import load_data_all
-from my_color_palette import apply_style, MAIN_COLORS, FONT
+from tools.common.utils import load_data_all
+from plot_util.my_color_palette import apply_style, MAIN_COLORS, FONT
 
 from constants import PLOT_OUT_PATH
 

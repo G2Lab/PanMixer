@@ -1,27 +1,12 @@
-import yaml, os
+import os
 
 
-def load_config():
-    # Load default template
-    with open("config.yaml") as f:
-        config = yaml.safe_load(f)
-
-    # If user has a local config, override defaults
-    if os.path.exists("config.local.yaml"):
-        with open("config.local.yaml") as f:
-            local_config = yaml.safe_load(f)
-        config.update(local_config)
-
-    return config
-
-CONFIG = load_config()
-BASE_PATH = CONFIG["base_path"]
-PYTHON_ENV = CONFIG["python_env"]
+BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 
 STARTING_DATA_PATH = f"{BASE_PATH}/starting_data"
 DEMOGRAPHICS_CSV = f"{STARTING_DATA_PATH}/Pangenomes Populations - VCF.csv"
 
-DEFAULT_SUBJECTS_FILE = f"{STARTING_DATA_PATH}/subjects_files/subjects_small.txt"
+DEFAULT_SUBJECTS_FILE = f"{STARTING_DATA_PATH}/subjects_files/subjects_4.txt"
 DEFAULT_CAPACITY_FILE = f"{STARTING_DATA_PATH}/capacity_files/capacities_test.txt"
 
 DEAD_WEIGHT = 10000000000
@@ -109,10 +94,6 @@ AGGREGATION_DICTIONARY = {
     "pmi_gain_normalized": "mean",
     "number_of_moves": "sum",
     "percent_shared_snps": "mean",
-
-    "maf_wd": "mean",
-    "maf_kl": "mean",
-    "ld_euclidean": "mean",
 
     "ld_sums": "sum",
     "ld_counts": "sum",

@@ -5,11 +5,9 @@
 #SBATCH --mem=40G
 #SBATCH --time=24:00:00
 #SBATCH --output=get_pmi_weights_%a.out
-#SBATCH --error=get_pmi_weights_s%a.err
+#SBATCH --error=get_pmi_weights_%a.err
 
-PYTHON=/users/jb4816/.conda/envs/genomics2/bin/python3
-
-plink_path="/gpfs/commons/home/jblindenbach/tools/plink"
+PYTHON="${PYTHON:-python3}"
 
 # Get the subject ID from the SLURM_ARRAY_TASK_ID
 subject_id=$(( ($SLURM_ARRAY_TASK_ID - 1) % 44))

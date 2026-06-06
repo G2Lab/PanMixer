@@ -7,7 +7,7 @@
 #SBATCH --output=convert_2_npy%a.out
 #SBATCH --error=convert_2_npy%a.err
 
-PYTHON=/users/jb4816/.conda/envs/genomics2/bin/python3
+PYTHON="${PYTHON:-python3}"
 
 CHR=$SLURM_ARRAY_TASK_ID
 CHR_DIR="./chr${CHR}"
@@ -16,6 +16,6 @@ VCF1="${CHR_DIR}/pangenome.vcf.gz"
 VCF2="${CHR_DIR}/PG.vcf.gz"
 VCF3="${CHR_DIR}/1000g_phased.vcf.gz"
 
-$PYTHON ../tools/VCFtoNP.py ${VCF1} true
-$PYTHON ../tools/VCFtoNP.py ${VCF2} false
-$PYTHON ../tools/VCFtoNP.py ${VCF3} true
+$PYTHON ../tools/common/VCFtoNP.py ${VCF1} true
+$PYTHON ../tools/common/VCFtoNP.py ${VCF2} false
+$PYTHON ../tools/common/VCFtoNP.py ${VCF3} true

@@ -7,7 +7,7 @@
 #SBATCH --output=get_mappings%a.out
 #SBATCH --error=get_mappings%a.err
 
-PYTHON=/users/jb4816/.conda/envs/genomics2/bin/python3
+PYTHON="${PYTHON:-python3}"
 
 CHR=$SLURM_ARRAY_TASK_ID
 CHR_DIR="./chr${CHR}"

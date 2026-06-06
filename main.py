@@ -1,29 +1,27 @@
 import numpy as np
 import argparse
 
-from tools.experiment_starter import experiment_starter
-from tools.utils import latest_experiment_number
-from tools.optimizer import optimizer
-from tools.stacker import stacker
-from tools.gather_results import gather_results
-from tools.gap_score import gap_score_computer
-from tools.convert_2_vcf import convert_2_vcf
-from tools.beagle_refinement import beagle_refinement
-from tools.combine_vcfs import combine_vcfs
-from tools.af_loss import af_loss_computer
-from tools.ld_loss import ld_loss
-from tools.verify_genotypes import verify_all
-from tools.accuracy_stats import accuracy_stats
-from tools.vg_prep import vg_prep
-from tools.quick_align import quick_align
-from tools.filtered_read_mapping import filtered_read_mapping
-from tools.personalized_read_mapping import personalized_read_mapping
-from tools.diploid_gap_score import diploid_gap_score_computer
-from tools.MIA_privacy import MIA_privacy_computer
-from tools.reverse_gap_score import reverse_gap_score_computer
-from tools.create_multitarget_vcfs import create_multitarget_vcfs
-from supplementary_analysis_tools.gap_score_threshold_analysis import analyze_experiment_gap_thresholds
-from tools.VCFtoNP_parallel import VCFtoNP_parallel
+from tools.common.experiment_starter import experiment_starter
+from tools.common.utils import latest_experiment_number
+from tools.panmixer.optimizer import optimizer
+from tools.panmixer.stacker import stacker
+from tools.common.gather_results import gather_results
+from tools.downstream.privacy.gap_score import gap_score_computer
+from tools.common.convert_2_vcf import convert_2_vcf
+from tools.beagle.beagle_refinement import beagle_refinement
+from tools.common.combine_vcfs import combine_vcfs
+from tools.downstream.utility_in.af_loss import af_loss_computer
+from tools.downstream.utility_in.ld_loss import ld_loss
+from tools.common.verify_genotypes import verify_all
+from tools.beagle.accuracy_stats import accuracy_stats
+from tools.downstream.utility_out.vg_prep import vg_prep
+from tools.downstream.utility_out.quick_align import quick_align
+from tools.downstream.utility_out.filtered_read_mapping import filtered_read_mapping
+from tools.downstream.utility_out.personalized_read_mapping import personalized_read_mapping
+from tools.downstream.privacy.diploid_gap_score import diploid_gap_score_computer
+from tools.downstream.privacy.MIA_privacy import MIA_privacy_computer
+from tools.common.create_multitarget_vcfs import create_multitarget_vcfs
+from tools.common.VCFtoNP_parallel import VCFtoNP_parallel
 
 from constants import (
     STARTING_DATA_PATH,
@@ -59,7 +57,6 @@ def main():
     gather_results_parser.add_argument("--ld_loss", action="store_true", help="Gather just AF loss results", default=False)
     gather_results_parser.add_argument("--pangenie_stats", action="store_true", help="Gather just pangenie stats results", default=False)
     gather_results_parser.add_argument("--accuracy_stats", action="store_true", help="Gather just accuracy stats results", default=False)
-    gather_results_parser.add_argument("--maf_ld", action="store_true", help="Gather just maf ld", default=False)
     gather_results_parser.add_argument("--giraffe", action="store_true", help="Gather just giraffe", default=False)
     gather_results_parser.add_argument("--filtered_giraffe", action="store_true", help="Gather just filtered giraffe", default=False)
     gather_results_parser.add_argument("--personalized_giraffe", action="store_true", help="Gather just personalized giraffe", default=False)
@@ -72,7 +69,6 @@ def main():
 
     gapscore_parser = tools.add_parser("gap_score", help="Compute gap score")
     diploid_gapscore_parser = tools.add_parser("gap_score_all", help="Compute gap score")
-    reverse_gapscore_parser = tools.add_parser("reverse_gap_score", help="Compute reverse gap score (original vs pangenome)")
 
     af_loss_parser = tools.add_parser("af_loss", help="Compute AF loss")
     af_loss_parser.add_argument("--dont_replace", action="store_true", help="Don't replace", default=False)
@@ -98,12 +94,9 @@ def main():
 
     quick_align_parser = tools.add_parser("quick_align", help="Quick alignment with chr21 reads")
 
-    filtered_read_mapping_parser = tools.add_parser("filtered_read_mapping", help="Read mapping to AF>=10% filtered graph")
+    filtered_read_mapping_parser = tools.add_parser("filtered_read_mapping", help="Read mapping to AF>=10%% filtered graph")
 
     personalized_read_mapping_parser = tools.add_parser("personalized_read_mapping", help="Read mapping to personalized (unfiltered) graph")
-
-    gap_threshold_parser = tools.add_parser("gap_threshold", help="Analyze gap score privacy thresholds across pangenome sizes")
-    gap_threshold_parser.add_argument("--pangenome_sizes", type=str, default="50,100,250,500,1000,1500,2000,2500,3000", help="Comma-separated pangenome sizes to test")
 
     create_multitarget_vcfs_parser = tools.add_parser("create_multitarget_vcfs", help="Create multitarget vcfs")
     create_multitarget_vcfs_parser.add_argument("--target_exp", type=int, required=True, help="Target experiment")
@@ -120,7 +113,7 @@ def main():
     elif args.tool == "optimize":
         optimizer(args.baseline_unique, args.fixed_param, exp, args.seed)
     elif args.tool == "gather_results":
-        gather_results(exp, args.overwrite, args.optimizer, args.reindex, args.gap_score, args.stacker, args.af_loss, args.pangenie_stats, args.ld_loss, args.accuracy_stats, args.maf_ld, args.giraffe, args.filtered_giraffe, args.personalized_giraffe, args.MIA_privacy)
+        gather_results(exp, args.overwrite, args.optimizer, args.reindex, args.gap_score, args.stacker, args.af_loss, args.pangenie_stats, args.ld_loss, args.accuracy_stats, args.giraffe, args.filtered_giraffe, args.personalized_giraffe, args.MIA_privacy)
     elif args.tool == "stacker":
         stacker(args.strategy, exp)
     elif args.tool == "gap_score":
@@ -129,8 +122,6 @@ def main():
         diploid_gap_score_computer(exp)
     elif args.tool == "MIA_privacy":
         MIA_privacy_computer(exp)
-    elif args.tool == "reverse_gap_score":
-        reverse_gap_score_computer(exp)
     elif args.tool == "convert_2_vcf":
         convert_2_vcf(exp)
     elif args.tool == "beagle":
@@ -153,9 +144,6 @@ def main():
         filtered_read_mapping(exp)
     elif args.tool == "personalized_read_mapping":
         personalized_read_mapping(exp)
-    elif args.tool == "gap_threshold":
-        pangenome_sizes = [int(x) for x in args.pangenome_sizes.split(",")]
-        analyze_experiment_gap_thresholds(exp, pangenome_sizes=pangenome_sizes)
     elif args.tool == "create_multitarget_vcfs":
         create_multitarget_vcfs(exp, args.target_exp)
     elif args.tool == "VCFtoNP_parallel":

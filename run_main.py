@@ -20,19 +20,19 @@ Steps:
 
 import argparse
 
-from tools.experiment_starter import experiment_starter
-from tools.utils import latest_experiment_number
-from tools.optimizer import optimizer
-from tools.stacker import stacker
-from tools.convert_2_vcf import convert_2_vcf
-from tools.combine_vcfs import combine_vcfs
-from tools.diploid_gap_score import diploid_gap_score_computer
-from tools.MIA_privacy import MIA_privacy_computer
-from tools.af_loss import af_loss_computer
-from tools.ld_loss import ld_loss
-from tools.vg_prep import vg_prep
-from tools.quick_align import quick_align
-from tools.slurm_helper import set_dependency, clear_dependency
+from tools.common.experiment_starter import experiment_starter
+from tools.common.utils import latest_experiment_number
+from tools.panmixer.optimizer import optimizer
+from tools.panmixer.stacker import stacker
+from tools.common.convert_2_vcf import convert_2_vcf
+from tools.common.combine_vcfs import combine_vcfs
+from tools.downstream.privacy.diploid_gap_score import diploid_gap_score_computer
+from tools.downstream.privacy.MIA_privacy import MIA_privacy_computer
+from tools.downstream.utility_in.af_loss import af_loss_computer
+from tools.downstream.utility_in.ld_loss import ld_loss
+from tools.downstream.utility_out.vg_prep import vg_prep
+from tools.downstream.utility_out.quick_align import quick_align
+from tools.common.slurm_helper import set_dependency, clear_dependency
 
 from constants import DEFAULT_CAPACITY_FILE, DEFAULT_SUBJECTS_FILE
 

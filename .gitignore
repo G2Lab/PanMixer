@@ -1,5 +1,3 @@
-config.local.yaml
-
 # Claude Code tool state
 .claude/
 
